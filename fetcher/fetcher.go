@@ -12,7 +12,13 @@ import (
 )
 
 func Fetch(url string) ([]byte, error) {
-	resp, err := http.Get(url)
+	client := http.DefaultClient
+	r, err := http.NewRequest(http.MethodGet, url, nil)
+	r.Header.Add("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36")
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(r)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +30,7 @@ func Fetch(url string) ([]byte, error) {
 
 	bodyReader := bufio.NewReader(resp.Body)
 	e := DetermineEncoding(bodyReader)
-	utf8Reader := transform.NewReader(bodyReader,  e.NewDecoder())
+	utf8Reader := transform.NewReader(bodyReader, e.NewDecoder())
 	return ioutil.ReadAll(utf8Reader)
 }
 

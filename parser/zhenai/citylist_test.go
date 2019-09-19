@@ -1,4 +1,4 @@
-package parser
+package zhenai
 
 import (
 	"github.com/xiaozefeng/go-web-crawler/fetcher"
