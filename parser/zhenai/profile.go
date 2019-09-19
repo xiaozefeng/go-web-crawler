@@ -8,35 +8,48 @@ import (
 	"log"
 )
 
-func ParseProfile(content []byte) engine.ParseResult {
+func ParseProfile(content []byte, name, avatar, gender string) engine.ParseResult {
 	var r engine.ParseResult
 	document, err := goquery.NewDocumentFromReader(bytes.NewReader(content))
 	if err != nil {
 		log.Printf("goquery new document error:%v", err)
 	}
 
-	s1 := make([]string, 0)
-	s2 := make([]string, 0)
+	var profile = zhenai.Profile{}
+	profile.Name = name
+	profile.Gender = gender
+	profile.Avatar = avatar
 	document.Find(".purple-btns div").Each(func(i int, s *goquery.Selection) {
-		s1 = append(s1, s.Text())
+		text := s.Text()
+		switch i {
+		case 1:
+			profile.Age = text
+		case 3:
+			profile.Height = text
+		case 4:
+			profile.Weight = text
+		case 6:
+			profile.Income = text
+		case 0:
+			profile.Marriage = text
+		case 8:
+			profile.Education = text
+		case 7:
+			profile.Occupation = text
+		}
+
 	})
 	document.Find(".pink-btns div").Each(func(i int, s *goquery.Selection) {
-		s2 = append(s2, s.Text())
+		text := s.Text()
+		switch i {
+		case 1:
+			profile.Hukou = text
+		case 5:
+			profile.House = text
+		case 6:
+			profile.Car = text
+		}
 	})
-	profile := zhenai.Profile{
-		Name:       "",
-		Gender:     "",
-		Age:        s1[1],
-		Height:     s1[3],
-		Weight:     s1[4],
-		Income:     s1[6],
-		Marriage:   s1[0],
-		Education:  s1[8],
-		Occupation: s1[7],
-		Hukou:      s2[1],
-		House:      s2[5],
-		Car:        s2[6],
-	}
 
 	r.Items = append(r.Items, profile)
 	return r

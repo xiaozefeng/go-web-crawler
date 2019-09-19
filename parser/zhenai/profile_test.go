@@ -28,7 +28,7 @@ func TestParseProfile(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	parseResult:= ParseProfile(content)
+	parseResult:= ParseProfile(content,"","", "")
 	fmt.Printf("%#v",parseResult.Items[0])
 }
 

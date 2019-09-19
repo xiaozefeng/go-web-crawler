@@ -10,12 +10,17 @@ var cityListReg = regexp.MustCompile(`<a href="(http://www.zhenai.com/zhenghun/[
 func ParseCityList(content []byte) engine.ParseResult {
 	matches := cityListReg.FindAllStringSubmatch(string(content), -1)
 	var result = engine.ParseResult{}
+	var limit = 1
 	for _, m := range matches {
 		result.Requests = append(result.Requests, engine.Request{
 			Url:       m[1],
-			ParseFunc: ParseCity,
+			ParseFunc: ParseCityWithGoQuery,
 		})
-		result.Items = append(result.Items, m[2])
+		//result.Items = append(result.Items, m[2])
+		limit--
+		if limit == 0 {
+			break
+		}
 	}
 	return result
 }

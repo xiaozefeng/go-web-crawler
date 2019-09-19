@@ -14,4 +14,5 @@ type Profile struct {
 	constellation string
 	House         string
 	Car           string
+	Avatar        string
 }
