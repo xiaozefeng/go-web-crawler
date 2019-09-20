@@ -13,10 +13,10 @@ import (
 	"time"
 )
 
-var rateLimiter = time.Tick(100 * time.Microsecond)
+var rateLimiter = time.Tick(200 * time.Microsecond)
 
 func Fetch(url string) ([]byte, error) {
-	if isDuplicate(url) {
+	if isVisited(url) {
 		return nil, errors.New("duplicated url")
 	}
 	<-rateLimiter
@@ -42,15 +42,14 @@ func Fetch(url string) ([]byte, error) {
 	return ioutil.ReadAll(utf8Reader)
 }
 
-var urlMap = make(map[string]bool)
+var visitURLS = make(map[string]bool)
 
-func isDuplicate(url string) bool {
-	if _, ok := urlMap[url]; ok {
+func isVisited(url string) bool {
+	if visitURLS[url] {
 		return true
-	} else {
-		urlMap[url] = true
-		return false
 	}
+	visitURLS[url] = true
+	return false
 }
 
 func DetermineEncoding(r *bufio.Reader) encoding.Encoding {

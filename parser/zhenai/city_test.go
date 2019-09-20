@@ -6,6 +6,7 @@ import (
 	"github.com/xiaozefeng/go-web-crawler/fetcher"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -47,4 +48,14 @@ func TestParseCityWithGoQuery2(t *testing.T) {
 		fmt.Println(m[1])
 	}
 }
+
+func TestGetIdFromURL(t *testing.T) {
+	var s = "https://album.zhenai.com/u/1770372887"
+	if index := strings.LastIndex(s, `/`); index!=-1{
+		s = s[index+1:]
+	}
+	fmt.Println("s",s)
+
+}
+
 

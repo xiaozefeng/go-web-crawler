@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func ParseProfile(content []byte, name, avatar, gender string) engine.ParseResult {
+func ParseProfile(content []byte, info zhenai.UserInfo) engine.ParseResult {
 	var r engine.ParseResult
 	document, err := goquery.NewDocumentFromReader(bytes.NewReader(content))
 	if err != nil {
@@ -16,9 +16,9 @@ func ParseProfile(content []byte, name, avatar, gender string) engine.ParseResul
 	}
 
 	var profile = zhenai.Profile{}
-	profile.Name = name
-	profile.Gender = gender
-	profile.Avatar = avatar
+	profile.Name = info.Name
+	profile.Gender = info.Gender
+	profile.Avatar = info.Avatar
 	document.Find(".purple-btns div").Each(func(i int, s *goquery.Selection) {
 		text := s.Text()
 		switch i {
@@ -50,7 +50,12 @@ func ParseProfile(content []byte, name, avatar, gender string) engine.ParseResul
 			profile.Car = text
 		}
 	})
-
-	r.Items = append(r.Items, profile)
+	var item = engine.Item{
+		Id:      info.Id,
+		Url:     info.Url,
+		Type:    "zhenai",
+		Payload: profile,
+	}
+	r.Items = append(r.Items, item)
 	return r
 }

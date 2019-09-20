@@ -1,10 +1,9 @@
 package engine
 
-import "fmt"
-
 type ConcurrentEngine struct {
 	Scheduler Scheduler
 	WorkCount int
+	ItemChan chan Item
 }
 
 type Scheduler interface {
@@ -34,7 +33,10 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		parseResult := <-out
 		for _, item := range parseResult.Items {
-			fmt.Printf("Got item:%#v\n", item)
+			//fmt.Printf("Got item:%#v\n", item)
+			go func() {
+				e.ItemChan <- item
+			}()
 		}
 
 		for _, req := range parseResult.Requests {

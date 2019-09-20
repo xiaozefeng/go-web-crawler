@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/xiaozefeng/go-web-crawler/fetcher"
+	"github.com/xiaozefeng/go-web-crawler/model/zhenai"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -28,7 +29,7 @@ func TestParseProfile(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	parseResult:= ParseProfile(content,"","", "")
+	parseResult:= ParseProfile(content,zhenai.UserInfo{})
 	fmt.Printf("%#v",parseResult.Items[0])
 }
 

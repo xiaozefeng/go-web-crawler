@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/xiaozefeng/go-web-crawler/engine"
+	"github.com/xiaozefeng/go-web-crawler/model/zhenai"
 	"log"
 	"regexp"
+	"strings"
 )
 
 var cityRe = regexp.MustCompile(`<a href="(http://album.zhenai.com/u/[0-9]+)"[^>]*>([^<]+)</a>`)
@@ -43,10 +45,22 @@ func ParseCityWithGoQuery(content []byte) engine.ParseResult {
 		name := a.Text()
 		url, _ := a.Attr("href")
 		var avatar, _ = s.Find(".photo a img").First().Attr("src")
+		var id string
+		if index := strings.LastIndex(url, `/`); index != -1 {
+			id = url[index+1:]
+		}
+
+		userInfo := zhenai.UserInfo{
+			Url:    url,
+			Id:     id,
+			Name:   name,
+			Gender: gender,
+			Avatar: avatar,
+		}
 		r.Requests = append(r.Requests, engine.Request{
 			Url: url,
 			ParseFunc: func(bs []byte) engine.ParseResult {
-				return ParseProfile(bs, name, avatar, gender)
+				return ParseProfile(bs, userInfo)
 			},
 		})
 	})
