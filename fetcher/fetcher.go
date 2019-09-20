@@ -9,9 +9,13 @@ import (
 	"golang.org/x/text/transform"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
+var rateLimiter = time.Tick(100 * time.Microsecond)
+
 func Fetch(url string) ([]byte, error) {
+	<- rateLimiter
 	client := http.DefaultClient
 	r, err := http.NewRequest(http.MethodGet, url, nil)
 	r.Header.Add("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36")
