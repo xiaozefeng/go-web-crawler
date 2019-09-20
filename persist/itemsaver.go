@@ -3,12 +3,10 @@ package persist
 import (
 	"context"
 	"errors"
+	"github.com/olivere/elastic"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"log"
 )
-
-import "github.com/olivere/elastic/v7"
-
 
 func ItemSaver(index string) (chan engine.Item, error) {
 	client, err := elastic.NewClient(elastic.SetSniff(false))

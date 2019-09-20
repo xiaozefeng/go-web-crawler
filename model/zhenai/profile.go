@@ -13,7 +13,7 @@ type Profile struct {
 	Education     string
 	Occupation    string
 	Hukou         string
-	constellation string
+	Constellation string
 	House         string
 	Car           string
 	Avatar        string
