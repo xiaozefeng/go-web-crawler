@@ -13,8 +13,8 @@ func main() {
 	//})
 
 	e := engine.ConcurrentEngine{
-		Scheduler: &scheduler.SimpleScheduler{},
-		WorkCount: 10,
+		Scheduler: &scheduler.QueuedScheduler{},
+		WorkCount:10,
 	}
 	e.Run(engine.Request{
 		Url:       "http://www.zhenai.com/zhenghun",
