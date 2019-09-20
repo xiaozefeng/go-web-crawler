@@ -36,3 +36,15 @@ func TestParseCityWithGoQuery(t *testing.T) {
 
 	fmt.Println(parseResult.Items)
 }
+
+func TestParseCityWithGoQuery2(t *testing.T) {
+	bytes, err := ioutil.ReadFile("./city_data.html")
+	if err != nil {
+		panic(err)
+	}
+	matches := cityURLRe.FindAllStringSubmatch(string(bytes), -1)
+	for _, m := range matches {
+		fmt.Println(m[1])
+	}
+}
+

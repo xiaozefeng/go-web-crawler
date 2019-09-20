@@ -34,7 +34,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		parseResult := <-out
 		for _, item := range parseResult.Items {
-			fmt.Printf("Got item:%#v", item)
+			fmt.Printf("Got item:%#v\n", item)
 		}
 
 		for _, req := range parseResult.Requests {
