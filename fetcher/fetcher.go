@@ -2,6 +2,7 @@ package fetcher
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -15,7 +16,10 @@ import (
 var rateLimiter = time.Tick(100 * time.Microsecond)
 
 func Fetch(url string) ([]byte, error) {
-	<- rateLimiter
+	if isDuplicate(url) {
+		return nil, errors.New("duplicated url")
+	}
+	<-rateLimiter
 	client := http.DefaultClient
 	r, err := http.NewRequest(http.MethodGet, url, nil)
 	r.Header.Add("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36")
@@ -36,6 +40,17 @@ func Fetch(url string) ([]byte, error) {
 	e := DetermineEncoding(bodyReader)
 	utf8Reader := transform.NewReader(bodyReader, e.NewDecoder())
 	return ioutil.ReadAll(utf8Reader)
+}
+
+var urlMap = make(map[string]bool)
+
+func isDuplicate(url string) bool {
+	if _, ok := urlMap[url]; ok {
+		return true
+	} else {
+		urlMap[url] = true
+		return false
+	}
 }
 
 func DetermineEncoding(r *bufio.Reader) encoding.Encoding {
