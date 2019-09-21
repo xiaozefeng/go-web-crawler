@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	handler, err := controller.CreateSearchResultHandler("/home/mikefeng/github.com/go-web-crawler/frontend/view/index.tmpl")
+	handler, err := controller.CreateSearchResultHandler("./view/index.tmpl")
 	if err != nil {
 		panic(err)
 	}
