@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"github.com/xiaozefeng/go-web-crawler/distributed/rpcsupport"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"log"
@@ -20,7 +21,7 @@ func ItemSaver(host string) (chan engine.Item, error) {
 			log.Printf("Got item:%v, itemCount:%d\n", item, itemCount)
 			// call rpc
 			var result string
-			err := client.Call("ItemSaverService.Save", item, &result)
+			err := client.Call(config.ItemSaverRpc, item, &result)
 			if err != nil {
 				log.Println("item saver, Save item err:", err)
 				continue

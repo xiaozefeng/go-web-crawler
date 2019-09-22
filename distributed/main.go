@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"github.com/xiaozefeng/go-web-crawler/distributed/persist/client"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"github.com/xiaozefeng/go-web-crawler/parser/zhenai"
@@ -13,7 +15,7 @@ func main() {
 	//	ParseFunc: zhenai.ParseCityList,
 	//})
 
-	itemChan, err := client.ItemSaver(":1234")
+	itemChan, err := client.ItemSaver(fmt.Sprintf(":%d", config.ItemSaverPort))
 	if err != nil {
 		panic(err)
 	}

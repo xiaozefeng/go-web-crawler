@@ -3,6 +3,7 @@ package persist
 import (
 	"context"
 	"github.com/olivere/elastic"
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func TestElastic(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	_, err = client.Search("dating_profile").Query(elastic.NewQueryStringQuery("123asfafafasfa")).
+	_, err = client.Search(config.ElasticSearchIndex).Query(elastic.NewQueryStringQuery("123asfafafasfa")).
 		From(10).
 		Do(context.Background())
 	if err != nil {

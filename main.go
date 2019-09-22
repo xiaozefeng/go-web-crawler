@@ -1,13 +1,12 @@
 package main
 
 import (
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"github.com/xiaozefeng/go-web-crawler/parser/zhenai"
 	"github.com/xiaozefeng/go-web-crawler/persist"
 	"github.com/xiaozefeng/go-web-crawler/scheduler"
 )
-
-const index = "dating_profile"
 
 func main() {
 	//engine.SimpleEngine{}.Run(engine.Request{
@@ -15,7 +14,7 @@ func main() {
 	//	ParseFunc: zhenai.ParseCityList,
 	//})
 
-	itemChan, err := persist.ItemSaver(index)
+	itemChan, err := persist.ItemSaver(config.ElasticSearchIndex)
 	if err != nil {
 		panic(err)
 	}

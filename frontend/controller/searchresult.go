@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"github.com/olivere/elastic"
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"github.com/xiaozefeng/go-web-crawler/frontend/model"
 	"github.com/xiaozefeng/go-web-crawler/frontend/view"
@@ -53,7 +54,7 @@ func (s SearchResultHandler) ServeHTTP(w http.ResponseWriter, req *http.Request)
 func (s SearchResultHandler) getPageData(q string, from int) (model.SearchResult, error) {
 	var r = model.SearchResult{}
 	resp, err := s.client.
-		Search("dating_profile").
+		Search(config.ElasticSearchIndex).
 		//Type("zhenai").
 		Query(elastic.NewQueryStringQuery(q)).
 		From(from).

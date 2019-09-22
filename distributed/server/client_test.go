@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/xiaozefeng/go-web-crawler/distributed/config"
 	"github.com/xiaozefeng/go-web-crawler/distributed/rpcsupport"
 	"github.com/xiaozefeng/go-web-crawler/engine"
 	"github.com/xiaozefeng/go-web-crawler/model/zhenai"
@@ -38,8 +39,8 @@ func TestItemSaver(t *testing.T) {
 			Avatar:        "https://photo.zastatic.com/images/photo/463807/1855225564/1430605127695030.jpg?scrop=1&crop=1&cpos=north&w=200&h=200",
 		},
 	}
-	result:=""
-	err = client.Call("ItemSaverService.Save", item, &result)
+	result := ""
+	err = client.Call(config.ItemSaverRpc, item, &result)
 	if err != nil || result != "ok" {
 		t.Errorf("result:%s, err:%v", result, err)
 	}
